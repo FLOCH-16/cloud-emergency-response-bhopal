@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // PULSE CAD Operations Collections
+    match /incidents/{incidentId} {
+      allow read, write: if true;
+    }
+    match /units/{unitId} {
+      allow read, write: if true;
+    }
+    match /hospitals/{hospitalId} {
+      allow read, write: if true;
+    }
+    match /trafficSignals/{signalId} {
+      allow read, write: if true;
+    }
+  }
+}
