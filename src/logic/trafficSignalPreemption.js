@@ -17,13 +17,25 @@ import { calculateDistanceInMeters } from './haversine.js'
 export function evaluateSignalPreemption(signals, units, preemptionRadiusMeters = 300) {
   if (!signals || signals.length === 0) return []
 
-  const activeDispatchedUnits = (units || []).filter(u => u.status === 'dispatched')
+  const activeUnits = (units || []).filter(u => u.status === 'dispatched' || u.status === 'returning')
 
   return signals.map(signal => {
-    // If signal is bound to a specific unit & route index
+    // If signal belongs to a specific unit and route leg
     if (signal.unitId) {
-      const assignedUnit = activeDispatchedUnits.find(u => u.id === signal.unitId)
+      const assignedUnit = activeUnits.find(u => u.id === signal.unitId)
       if (!assignedUnit) {
+        return {
+          ...signal,
+          status: 'red',
+          preemptedBy: null,
+          preemptedUnitId: null,
+          distanceToNearestUnitMeters: null,
+          passed: signal.passed || false
+        }
+      }
+
+      // Must belong to that unit's current leg
+      if (signal.leg && assignedUnit.stage && signal.leg !== assignedUnit.stage) {
         return {
           ...signal,
           status: 'red',
@@ -47,7 +59,7 @@ export function evaluateSignalPreemption(signals, units, preemptionRadiusMeters 
         }
       }
 
-      // Proximity check (within 300m)
+      // Proximity check to its OWN unit only (within 300m)
       const distMeters = calculateDistanceInMeters(
         assignedUnit.location.lat,
         assignedUnit.location.lng,
@@ -72,7 +84,7 @@ export function evaluateSignalPreemption(signals, units, preemptionRadiusMeters 
     let preemptingUnit = null
     let minDistance = Infinity
 
-    for (const unit of activeDispatchedUnits) {
+    for (const unit of activeUnits) {
       const distMeters = calculateDistanceInMeters(
         unit.location.lat,
         unit.location.lng,

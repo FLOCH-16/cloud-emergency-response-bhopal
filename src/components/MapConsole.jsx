@@ -258,7 +258,8 @@ export function MapConsole({
     if (!map) return
 
     const existingMap = markersRef.current.incidents
-    const currentIds = new Set(incidents.map(i => i.id))
+    const visibleIncidents = incidents.filter(i => i.status !== 'resolved')
+    const currentIds = new Set(visibleIncidents.map(i => i.id))
 
     // Remove obsolete markers
     Object.keys(existingMap).forEach(id => {
@@ -271,7 +272,7 @@ export function MapConsole({
     if (!layers.incidents) return
 
     // Update or add markers
-    incidents.forEach(incident => {
+    visibleIncidents.forEach(incident => {
       const icon = createIncidentIcon(incident)
       const popupHtml = `
         <div style="font-family: var(--font-sans); color: var(--text-primary);">

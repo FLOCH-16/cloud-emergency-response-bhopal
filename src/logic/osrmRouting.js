@@ -68,12 +68,14 @@ export async function fetchRoadRoute(start, end) {
 
 /**
  * Places 3 simulated signal points at roughly 25%, 50%, and 75% along route geometry.
+ * Every dynamic route signal belongs to exactly one unit and one route leg.
  *
  * @param {Object} unit Dispatched unit
  * @param {Array<{ lat: number, lng: number }>} routeCoords Route coordinate array
+ * @param {string} leg Current route leg (e.g. 'en_route_scene' | 'en_route_hospital' | 'returning_to_base')
  * @returns {Array<Object>} 3 dynamic signal objects
  */
-export function generateRouteSignals(unit, routeCoords) {
+export function generateRouteSignals(unit, routeCoords, leg = 'en_route_scene') {
   if (!routeCoords || routeCoords.length < 4 || !unit) return []
 
   const idx25 = Math.max(1, Math.floor(routeCoords.length * 0.25))
@@ -82,8 +84,9 @@ export function generateRouteSignals(unit, routeCoords) {
 
   return [
     {
-      id: `SIG-${unit.id}-25`,
+      id: `SIG-${unit.id}-${leg}-25`,
       unitId: unit.id,
+      leg: leg,
       name: `Intersection 25% (${unit.callsign})`,
       intersection: `Route Mile 0.25`,
       location: routeCoords[idx25],
@@ -94,8 +97,9 @@ export function generateRouteSignals(unit, routeCoords) {
       isDynamic: true
     },
     {
-      id: `SIG-${unit.id}-50`,
+      id: `SIG-${unit.id}-${leg}-50`,
       unitId: unit.id,
+      leg: leg,
       name: `Intersection 50% (${unit.callsign})`,
       intersection: `Route Mile 0.50`,
       location: routeCoords[idx50],
@@ -106,8 +110,9 @@ export function generateRouteSignals(unit, routeCoords) {
       isDynamic: true
     },
     {
-      id: `SIG-${unit.id}-75`,
+      id: `SIG-${unit.id}-${leg}-75`,
       unitId: unit.id,
+      leg: leg,
       name: `Intersection 75% (${unit.callsign})`,
       intersection: `Route Mile 0.75`,
       location: routeCoords[idx75],

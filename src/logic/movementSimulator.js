@@ -117,6 +117,7 @@ export function advanceSimulationTick(units, incidents, hospitals) {
   const resolvedIncidentIds = []
   const updatedIncidents = []
   const legTransitions = []
+  const reachedBaseUnitIds = []
 
   for (const unit of units) {
     // Only units that are moving need position updates
@@ -204,6 +205,12 @@ export function advanceSimulationTick(units, incidents, hospitals) {
               end: hospitalTarget
             })
 
+            updatedIncidents.push({
+              ...assignedIncident,
+              patientPickedUp: true,
+              stage: 'transporting'
+            })
+
             updatedUnits.push({
               ...unit,
               location: { lat: stepResult.lat, lng: stepResult.lng },
@@ -248,6 +255,7 @@ export function advanceSimulationTick(units, incidents, hospitals) {
         }
       } else if (unit.status === 'returning') {
         // Returned to base station: unit is now available for new dispatches!
+        reachedBaseUnitIds.push(unit.id)
         updatedUnits.push({
           ...unit,
           location: { lat: stepResult.lat, lng: stepResult.lng },
@@ -274,6 +282,7 @@ export function advanceSimulationTick(units, incidents, hospitals) {
     updatedUnits,
     resolvedIncidentIds,
     updatedIncidents,
-    legTransitions
+    legTransitions,
+    reachedBaseUnitIds
   }
 }
