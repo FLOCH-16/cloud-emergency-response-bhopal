@@ -17,7 +17,7 @@ A high-density emergency computer-aided dispatch (CAD) console designed for muni
 ##  Key Capabilities & Workflows
 
 ### 1. Incident Intake & Rule-Based Severity Classification
-- Simulates real-time 911 emergency intake calls.
+- Simulates real-time 112 emergency intake calls.
 - Rule-based keyword engine (no ungrounded black-box ML):
   - **Critical**: Cardiac arrest, unconscious, gunshot, structure fire, active flames, collapse.
   - **Moderate**: Fractures, burns, smoke odor, vehicle collision, lacerations, gas leak.
