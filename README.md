@@ -4,7 +4,7 @@ A high-density emergency computer-aided dispatch (CAD) console designed for muni
 
 ---
 
-## ⚡ Architecture & Tech Stack
+##  Architecture & Tech Stack
 
 - **Frontend**: React 19 + Vite + Plain CSS Design Token System (`IBM Plex Sans` + `IBM Plex Mono`).
 - **Map Engine**: Leaflet (Esri World Dark Gray Base cartography, free, zero API key friction).
@@ -14,7 +14,7 @@ A high-density emergency computer-aided dispatch (CAD) console designed for muni
 
 ---
 
-## 🚒 Key Capabilities & Workflows
+##  Key Capabilities & Workflows
 
 ### 1. Incident Intake & Rule-Based Severity Classification
 - Simulates real-time 911 emergency intake calls.
@@ -55,7 +55,7 @@ A high-density emergency computer-aided dispatch (CAD) console designed for muni
 
 ---
 
-## 🛠️ Quick Start
+##  Quick Start
 
 ```bash
 # 1. Install dependencies
